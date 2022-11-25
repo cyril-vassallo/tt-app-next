@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  app-next:
+    image: "node:16.18"
+    container_name: app-next
+    working_dir: /usr/www/app
+    env_file:
+      - .env
+      - ../tt-app-next/.env
+    ports:
+      - ${PORT:-3000}:${PORT:-3000}
+    volumes:
+      - "../tt-app-next:/usr/www/app/"
+    command: "/bin/sh  install.sh"
+    networks:
+      - app-fullstack
+
+networks:
+  app-fullstack:
