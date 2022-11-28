@@ -1,29 +1,28 @@
-export interface Geo {
-  lat: string;
-  lng: string;
-}
-
-export interface Address {
-  street: string;
-  suite: string;
-  city: string;
-  zipcode: string;
-  geo: Geo;
-}
-
-export interface Company {
+import NextApiResponse from "next";
+export interface Role {
   name: string;
-  catchPhrase: string;
-  bs: string;
+  permissions: string[];
 }
 
 export interface User {
-  id: number;
-  name: string;
-  username: string;
+  id: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  address: Address;
-  phone: string;
-  website: string;
-  company: Company;
+  password: string;
+  job: string;
+  description: string;
+  photo: string;
+  role: Role;
+}
+
+export interface Meta {
+  method: string;
+  urn: string;
+  uri: string;
+}
+
+export interface NestUserApiResponse {
+  data: User[];
+  meta: Meta;
 }

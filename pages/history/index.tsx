@@ -2,10 +2,11 @@ import {useEffect} from 'react';
 import Button from '@mui/material/Button';
 import { increment, decrement, selectCounterState } from '../../store/counterSlice';
 import { selectUsersState, getUsersError, getUsersStatus, fetchUsers, fetchUser, selectUserState } from '../../store/usersSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Alert, Badge } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
+import { useAppDispatch } from '../../store/store';
 
 
 export default function History() {
@@ -14,7 +15,7 @@ export default function History() {
     const userState = useSelector(selectUserState);
     const usersStatus = useSelector(getUsersStatus);
     const error = useSelector(getUsersError);
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch();
 
     useEffect(() => {
       if(usersStatus === 'idle'){
@@ -24,7 +25,7 @@ export default function History() {
 
     const renderUsers = usersState.map((user, index) => {
       return <div style={{display: 'flex', margin: '5px'}} key={index}>
-          <Alert onClick={() => dispatch(fetchUser(user.id))} severity="info">{user.name}</Alert>
+          <Alert onClick={() => dispatch(fetchUser(user.id))} severity="info">{user.firstName} {user.lastName}</Alert>
         </div>
     }) 
 
