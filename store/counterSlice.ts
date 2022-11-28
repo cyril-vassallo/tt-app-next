@@ -31,3 +31,6 @@ export const selectCounterState = (state: AppState) =>
   state.counter.counterState;
 
 export default counterSlice.reducer;
+
+// Later, dispatch the thunk as needed in the app
+//dispatch(fetchUserById(123))

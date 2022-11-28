@@ -1,5 +1,6 @@
 import { authSlice } from "./authSlice";
 import { counterSlice } from "./counterSlice";
+import { usersSlice } from "./usersSlice";
 
 import { createWrapper } from "next-redux-wrapper";
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
@@ -9,6 +10,7 @@ const makeStore = () =>
     reducer: {
       [authSlice.name]: authSlice.reducer,
       [counterSlice.name]: counterSlice.reducer,
+      [usersSlice.name]: usersSlice.reducer,
     },
     devTools: true,
   });
