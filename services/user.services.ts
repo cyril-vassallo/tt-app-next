@@ -1,18 +1,21 @@
-import { User } from "../interfaces/user.interface";
+import { User, IUserId } from "../interfaces/user.interface";
 
-const API = "http://localhost:8080/user/all";
+class UserServices {
+  private API = "http://localhost:8080/user";
 
-const UserAPI = {
-  getUsers: async (): Promise<User[]> => {
-    return await fetch(API)
+  constructor() {}
+
+  public getUsers = async (): Promise<User[]> => {
+    return fetch(`${this.API}/all`)
       .then((response) => response.json())
       .then((json) => json.data);
-  },
-  getUser: async (id: number): Promise<User> => {
-    return await fetch(`${API}/${id}`)
+  };
+
+  public getUser = (userId: IUserId): Promise<User> => {
+    return fetch(`${this.API}/${userId.id}`)
       .then((response) => response.json())
       .then((json) => json.data);
-  },
-};
+  };
+}
 
-export default UserAPI;
+export const userServices = new UserServices();

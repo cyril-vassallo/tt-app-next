@@ -1,41 +1,45 @@
 import {useEffect} from 'react';
 import Button from '@mui/material/Button';
 import { increment, decrement, selectCounterState } from '../../store/counterSlice';
-import { selectUsersState, getUsersError, getUsersStatus, fetchUsers, fetchUser, selectUserState } from '../../store/usersSlice';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { selectUsersState, getUsersError, getUsersStatus, fetchUsers } from '../../store/usersSlice';
+import {selectAccountState, getAccountError, getAccountStatus, fetchAccount } from '../../store/AccountSlice';
 import { Alert, Badge } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
-import { useAppDispatch } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { User } from '../../interfaces/user.interface';
+import { Pending } from '@mui/icons-material';
 
 
 export default function History() {
-    const counterState = useSelector(selectCounterState);
-    const usersState = useSelector(selectUsersState);
-    const userState = useSelector(selectUserState);
-    const usersStatus = useSelector(getUsersStatus);
-    const error = useSelector(getUsersError);
-    const dispatch = useDispatch();
+    const counterState = useAppSelector(selectCounterState);
+    const usersState = useAppSelector(selectUsersState);
+    const AccountState = useAppSelector(selectAccountState);
+    const usersStatus = useAppSelector(getUsersStatus);
+    const userStatus = useAppSelector(getAccountStatus);
+    const usersError = useAppSelector(getUsersError);
+    const userError = useAppSelector(getAccountError);
+    const dispatch = useAppDispatch();
+
 
     useEffect(() => {
       if(usersStatus === 'idle'){
         dispatch(fetchUsers());
       }
-    },[usersStatus, dispatch])
+    },[])
 
     const renderUsers = usersState.map((user, index) => {
       return <div style={{display: 'flex', margin: '5px'}} key={index}>
-          <Alert onClick={() => dispatch(fetchUser(user.id))} severity="info">{user.firstName} {user.lastName}</Alert>
+          <Alert onClick={() => dispatch(fetchAccount({ id: user.id} ))} severity="info">{user.firstName} {user.lastName}</Alert>
         </div>
     }) 
 
-    const renderUser = userState && (
+    const renderUser = AccountState && (
       <ul>
         <li>
-          {userState.name}
+          {AccountState.firstName}
         </li>
         <li>
-          {userState.email}
+          {AccountState.email}
         </li>
       </ul>
     );
@@ -49,8 +53,9 @@ export default function History() {
       <Badge badgeContent={counterState} color="warning">
             <MailIcon color="primary" />
       </Badge>
-      { !error && renderUsers}
-      { !error && renderUser}
+      <Button onClick={ () => dispatch(fetchUsers()) } color="primary" variant="contained">Fetch</Button>
+      { !usersError && renderUsers}
+      { !userError && renderUser}
     </div>
   )
 }

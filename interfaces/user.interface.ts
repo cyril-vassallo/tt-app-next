@@ -26,3 +26,7 @@ export interface NestUserApiResponse {
   data: User[];
   meta: Meta;
 }
+
+export interface IUserId {
+  id?: string;
+}
