@@ -27,6 +27,11 @@ export interface NestUserApiResponse {
   meta: Meta;
 }
 
-export interface IUserId {
+export interface IUserThunkArgs {
   id?: string;
+}
+
+export interface ILoginThunkArgs {
+  email?: string;
+  password?: string;
 }

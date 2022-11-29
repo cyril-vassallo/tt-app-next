@@ -1,14 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userServices } from "../services/user.services";
-import { User, IUserId } from "../interfaces/user.interface";
+import { ILoginThunkArgs, User } from "../interfaces/user.interface";
 import { AppState } from "./store";
+import { ACTIONS, ACTIONS_PREFIX, THUNK_STATUS } from "../enums/actions.enums";
+import { ThunkStatusType } from "../types/types";
 
 //TODO - add async methods in reducer - https://redux-toolkit.js.org/api/createAsyncThunk
-export const fetchAccount = createAsyncThunk(
-  "account/fetchAccount",
-  async (userId: IUserId = {}, thunkAPI) => {
+export const fetchLogin = createAsyncThunk(
+  `${ACTIONS_PREFIX.ACCOUNT}/${ACTIONS.FETCH_LOGIN}`,
+  async (loginArgs: ILoginThunkArgs = {}, thunkAPI) => {
     try {
-      const account: User = await userServices.getUser(userId);
+      const account: User = await userServices.login(loginArgs);
       return account;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -18,40 +20,40 @@ export const fetchAccount = createAsyncThunk(
 
 interface AccountState {
   account: User | null;
-  status: "idle" | "pending" | "succeeded" | "failed";
+  status: ThunkStatusType;
   error: string | null;
 }
 
 const initialState = {
   account: null,
-  status: "idle",
+  status: THUNK_STATUS.IDLE,
   error: null,
 } as AccountState;
 
 // Then, handle actions in your reducers:
 export const accountSlice = createSlice({
-  name: "account",
+  name: ACTIONS_PREFIX.ACCOUNT,
   initialState,
   reducers: {
     // standard reducer logic, with auto-generated action types per reducer
   },
   extraReducers: (builder) => {
     //Account
-    builder.addCase(fetchAccount.pending, (state, action) => {
-      state.status = "pending";
+    builder.addCase(fetchLogin.pending, (state, action) => {
+      state.status = THUNK_STATUS.PENDING;
       state.error = null;
     });
 
-    builder.addCase(fetchAccount.fulfilled, (state, action) => {
+    builder.addCase(fetchLogin.fulfilled, (state, action) => {
       const loadedAccount = action.payload;
-      state.status = "succeeded";
+      state.status = THUNK_STATUS.SUCCEEDED;
       state.error = null;
       state.account = loadedAccount;
     });
 
-    builder.addCase(fetchAccount.rejected, (state, action) => {
+    builder.addCase(fetchLogin.rejected, (state, action) => {
       if (action.error.message) {
-        state.status = "failed";
+        state.status = THUNK_STATUS.FAILED;
         state.error = action.error.message;
       }
     });

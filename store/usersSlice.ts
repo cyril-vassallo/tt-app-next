@@ -2,11 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userServices } from "../services/user.services";
 import { User } from "../interfaces/user.interface";
 import { AppState } from "./store";
+import { ACTIONS, ACTIONS_PREFIX, THUNK_STATUS } from "../enums/actions.enums";
+import { ThunkStatusType } from "../types/types";
 
 //TODO - add async methods in reducer - https://redux-toolkit.js.org/api/createAsyncThunk
 export const fetchUsers = createAsyncThunk<User[]>(
-  "users/fetchUsers",
-  async (args, thunkAPI) => {
+  `${ACTIONS_PREFIX.USERS}/${ACTIONS.FETCH_USERS}`,
+  async (_, thunkAPI) => {
     try {
       const users: User[] = await userServices.getUsers();
       return users;
@@ -18,19 +20,19 @@ export const fetchUsers = createAsyncThunk<User[]>(
 
 interface UsersState {
   users: User[];
-  status: "idle" | "pending" | "succeeded" | "failed";
+  status: ThunkStatusType;
   error: string | null;
 }
 
 const initialState = {
   users: [],
-  status: "idle",
+  status: THUNK_STATUS.IDLE,
   error: null,
 } as UsersState;
 
 // Then, handle actions in your reducers:
 export const usersSlice = createSlice({
-  name: "users",
+  name: ACTIONS_PREFIX.USERS,
   initialState,
   reducers: {
     // standard reducer logic, with auto-generated action types per reducer
@@ -38,20 +40,20 @@ export const usersSlice = createSlice({
   extraReducers: (builder) => {
     // USERS
     builder.addCase(fetchUsers.pending, (state, action) => {
-      state.status = "pending";
+      state.status = THUNK_STATUS.PENDING;
       state.error = null;
     });
 
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
       const loadedUsers = action.payload.map((user: User) => user);
-      state.status = "succeeded";
+      state.status = THUNK_STATUS.SUCCEEDED;
       state.error = null;
       state.users = state.users.concat(loadedUsers);
     });
 
     builder.addCase(fetchUsers.rejected, (state, action) => {
       if (action.error.message) {
-        state.status = "failed";
+        state.status = THUNK_STATUS.FAILED;
         state.error = action.error.message;
       }
     });
