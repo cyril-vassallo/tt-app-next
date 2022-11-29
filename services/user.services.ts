@@ -12,6 +12,9 @@ class UserServices {
   private LOGIN_SUFFIX = API_RESOURCES_PATHS.LOGIN;
   private MAIN_RESOURCE = API_RESOURCES_PATHS.USER;
 
+  /**
+   * Fetch all the user list.
+   */
   public getUsers = async (): Promise<User[]> => {
     const requestInit: RequestInit = {
       method: HTTP_VERB.GET,
@@ -25,6 +28,9 @@ class UserServices {
       .then((json) => json.data);
   };
 
+  /**
+   * Fetch one user by id.
+   */
   public getUser = async (user: IUserThunkArgs): Promise<User> => {
     const requestInit: RequestInit = {
       method: HTTP_VERB.GET,
@@ -38,6 +44,10 @@ class UserServices {
       .then((json) => json.data);
   };
 
+  /**
+   * Fetch login, get an existing user by a given email and password.
+   * @param loginThunkArgs  { email , password }.
+   */
   public login = async (loginThunkArgs: ILoginThunkArgs): Promise<User> => {
     const requestInit: RequestInit = {
       method: HTTP_VERB.POST,
@@ -54,4 +64,7 @@ class UserServices {
   };
 }
 
+/**
+ * Create an instance of user services.
+ */
 export const userServices = new UserServices();
