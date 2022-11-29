@@ -1,3 +1,5 @@
+import { API_RESOURCES_PATHS, FETCH_HEADERS } from "../core/constants";
+import { HTTP_VERB } from "../enums/http.enums";
 import {
   User,
   ILoginThunkArgs,
@@ -5,37 +7,48 @@ import {
 } from "../interfaces/user.interface";
 
 class UserServices {
-  private API_ENTRY_POINT = "http://localhost:8080";
-  private MAIN_RESOURCE = "/user";
-
-  constructor() {}
+  private API_DOMAINE = API_RESOURCES_PATHS.API_DOMAINE;
+  private ALL_SUFFIX = API_RESOURCES_PATHS.ALL;
+  private LOGIN_SUFFIX = API_RESOURCES_PATHS.LOGIN;
+  private MAIN_RESOURCE = API_RESOURCES_PATHS.USER;
 
   public getUsers = async (): Promise<User[]> => {
-    return fetch(`${this.API_ENTRY_POINT}${this.MAIN_RESOURCE}/all`)
+    const requestInit: RequestInit = {
+      method: HTTP_VERB.GET,
+      headers: FETCH_HEADERS,
+    };
+    return fetch(
+      `${this.API_DOMAINE}${this.MAIN_RESOURCE}${this.ALL_SUFFIX}`,
+      requestInit
+    )
       .then((response) => response.json())
       .then((json) => json.data);
   };
 
-  public getUser = (user: IUserThunkArgs): Promise<User> => {
-    return fetch(`${this.API_ENTRY_POINT}${this.MAIN_RESOURCE}/${user.id}`)
+  public getUser = async (user: IUserThunkArgs): Promise<User> => {
+    const requestInit: RequestInit = {
+      method: HTTP_VERB.GET,
+      headers: FETCH_HEADERS,
+    };
+    return fetch(
+      `${this.API_DOMAINE}${this.MAIN_RESOURCE}/${user.id}`,
+      requestInit
+    )
       .then((response) => response.json())
       .then((json) => json.data);
   };
 
-  public login = (loginArgs: ILoginThunkArgs): Promise<User> => {
-    console.log(loginArgs);
-    const options = {
-      method: "POST",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginArgs),
+  public login = async (loginThunkArgs: ILoginThunkArgs): Promise<User> => {
+    const requestInit: RequestInit = {
+      method: HTTP_VERB.POST,
+      headers: FETCH_HEADERS,
+      body: JSON.stringify(loginThunkArgs),
     };
 
-    console.log(options);
-    return fetch(`${this.API_ENTRY_POINT}${this.MAIN_RESOURCE}/login`, options)
+    return fetch(
+      `${this.API_DOMAINE}${this.MAIN_RESOURCE}${this.LOGIN_SUFFIX}`,
+      requestInit
+    )
       .then((response) => response.json())
       .then((json) => json.data);
   };

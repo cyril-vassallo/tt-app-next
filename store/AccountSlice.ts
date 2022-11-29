@@ -8,9 +8,9 @@ import { ThunkStatusType } from "../types/types";
 //TODO - add async methods in reducer - https://redux-toolkit.js.org/api/createAsyncThunk
 export const fetchLogin = createAsyncThunk(
   `${ACTIONS_PREFIX.ACCOUNT}/${ACTIONS.FETCH_LOGIN}`,
-  async (loginArgs: ILoginThunkArgs = {}, thunkAPI) => {
+  async (loginThunkArgs: ILoginThunkArgs = {}, thunkAPI) => {
     try {
-      const account: User = await userServices.login(loginArgs);
+      const account: User = await userServices.login(loginThunkArgs);
       return account;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
