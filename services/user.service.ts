@@ -6,7 +6,7 @@ import {
   IUserThunkArgs,
 } from "../interfaces/user.interface";
 
-class UserServices {
+class UserService {
   private API_DOMAINE = API_RESOURCES_PATHS.API_DOMAINE;
   private ALL_SUFFIX = API_RESOURCES_PATHS.ALL;
   private LOGIN_SUFFIX = API_RESOURCES_PATHS.LOGIN;
@@ -67,4 +67,4 @@ class UserServices {
 /**
  * Create an instance of user services.
  */
-export const userServices = new UserServices();
+export const userService = new UserService();

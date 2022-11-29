@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { userServices } from "../services/user.services";
+import { userService } from "../services/user.service";
 import { User } from "../interfaces/user.interface";
 import { AppState } from "./store";
 import { ACTIONS, ACTIONS_PREFIX, THUNK_STATUS } from "../enums/actions.enums";
@@ -10,7 +10,7 @@ export const fetchUsers = createAsyncThunk<User[]>(
   `${ACTIONS_PREFIX.USERS}/${ACTIONS.FETCH_USERS}`,
   async (_, thunkAPI) => {
     try {
-      const users: User[] = await userServices.getUsers();
+      const users: User[] = await userService.getUsers();
       return users;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
