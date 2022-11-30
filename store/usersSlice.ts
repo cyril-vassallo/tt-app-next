@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userService } from "../services/user.service";
-import { User } from "../interfaces/user.interface";
+import { UserInterface } from "../interfaces/user.interface";
 import { AppState } from "./store";
 import { ACTIONS, ACTIONS_PREFIX, THUNK_STATUS } from "../enums/actions.enums";
 import { ThunkStatusType } from "../types/types";
 
 //TODO - add async methods in reducer - https://redux-toolkit.js.org/api/createAsyncThunk
-export const fetchUsers = createAsyncThunk<User[]>(
+export const fetchUsers = createAsyncThunk<UserInterface[]>(
   `${ACTIONS_PREFIX.USERS}/${ACTIONS.FETCH_USERS}`,
   async (_, thunkAPI) => {
     try {
-      const users: User[] = await userService.getUsers();
+      const users: UserInterface[] = await userService.findAll();
       return users;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -19,7 +19,7 @@ export const fetchUsers = createAsyncThunk<User[]>(
 );
 
 interface UsersState {
-  users: User[];
+  users: UserInterface[];
   status: ThunkStatusType;
   error: string | null;
 }
@@ -45,7 +45,7 @@ export const usersSlice = createSlice({
     });
 
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
-      const loadedUsers = action.payload.map((user: User) => user);
+      const loadedUsers = action.payload.map((user: UserInterface) => user);
       state.status = THUNK_STATUS.SUCCEEDED;
       state.error = null;
       state.users = state.users.concat(loadedUsers);

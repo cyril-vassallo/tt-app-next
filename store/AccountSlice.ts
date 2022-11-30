@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userService } from "../services/user.service";
-import { ILoginThunkArgs, User } from "../interfaces/user.interface";
+import {
+  LoginThunkArgsInterface,
+  UserInterface,
+} from "../interfaces/user.interface";
 import { AppState } from "./store";
 import { ACTIONS, ACTIONS_PREFIX, THUNK_STATUS } from "../enums/actions.enums";
 import { ThunkStatusType } from "../types/types";
@@ -8,9 +11,11 @@ import { ThunkStatusType } from "../types/types";
 //TODO - add async methods in reducer - https://redux-toolkit.js.org/api/createAsyncThunk
 export const fetchLogin = createAsyncThunk(
   `${ACTIONS_PREFIX.ACCOUNT}/${ACTIONS.FETCH_LOGIN}`,
-  async (loginThunkArgs: ILoginThunkArgs = {}, thunkAPI) => {
+  async (loginThunkArgs: LoginThunkArgsInterface = {}, thunkAPI) => {
     try {
-      const account: User = await userService.login(loginThunkArgs);
+      const account: UserInterface = await userService.requestLogin(
+        loginThunkArgs
+      );
       return account;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -19,7 +24,7 @@ export const fetchLogin = createAsyncThunk(
 );
 
 interface AccountState {
-  account: User | null;
+  account: UserInterface | null;
   status: ThunkStatusType;
   error: string | null;
 }

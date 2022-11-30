@@ -1,10 +1,9 @@
-import NextApiResponse from "next";
-export interface Role {
+export interface RoleInterface {
   name: string;
   permissions: string[];
 }
 
-export interface User {
+export interface UserInterface {
   id: string;
   firstName: string;
   lastName: string;
@@ -13,25 +12,30 @@ export interface User {
   job: string;
   description: string;
   photo: string;
-  role: Role;
+  role: RoleInterface;
 }
 
-export interface Meta {
+export interface MetaInterface {
   method: string;
   urn: string;
   uri: string;
 }
 
-export interface NestUserApiResponse {
-  data: User[];
-  meta: Meta;
+export interface UsersResponseInterface {
+  data: UserInterface[];
+  meta: MetaInterface;
 }
 
-export interface IUserThunkArgs {
+export interface UserResponseInterface {
+  data: UserInterface;
+  meta: MetaInterface;
+}
+
+export interface UserThunkArgsInterface {
   id?: string;
 }
 
-export interface ILoginThunkArgs {
+export interface LoginThunkArgsInterface {
   email?: string;
   password?: string;
 }

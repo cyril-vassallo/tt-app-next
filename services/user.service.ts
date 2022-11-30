@@ -1,9 +1,11 @@
 import { API_RESOURCES_PATHS, FETCH_HEADERS } from "../core/constants";
 import { HTTP_VERB } from "../enums/http.enums";
 import {
-  User,
-  ILoginThunkArgs,
-  IUserThunkArgs,
+  UserInterface,
+  LoginThunkArgsInterface,
+  UserThunkArgsInterface,
+  UsersResponseInterface,
+  UserResponseInterface,
 } from "../interfaces/user.interface";
 
 class UserService {
@@ -15,7 +17,7 @@ class UserService {
   /**
    * Fetch all the user list.
    */
-  public getUsers = async (): Promise<User[]> => {
+  public findAll = async (): Promise<UserInterface[]> => {
     const requestInit: RequestInit = {
       method: HTTP_VERB.GET,
       headers: FETCH_HEADERS,
@@ -25,13 +27,15 @@ class UserService {
       requestInit
     )
       .then((response) => response.json())
-      .then((json) => json.data);
+      .then((usersResponse: UsersResponseInterface) => usersResponse.data);
   };
 
   /**
    * Fetch one user by id.
    */
-  public getUser = async (user: IUserThunkArgs): Promise<User> => {
+  public findOneById = async (
+    user: UserThunkArgsInterface
+  ): Promise<UserInterface> => {
     const requestInit: RequestInit = {
       method: HTTP_VERB.GET,
       headers: FETCH_HEADERS,
@@ -41,14 +45,16 @@ class UserService {
       requestInit
     )
       .then((response) => response.json())
-      .then((json) => json.data);
+      .then((userResponse: UserResponseInterface) => userResponse.data);
   };
 
   /**
    * Fetch login, get an existing user by a given email and password.
    * @param loginThunkArgs  { email , password }.
    */
-  public login = async (loginThunkArgs: ILoginThunkArgs): Promise<User> => {
+  public requestLogin = async (
+    loginThunkArgs: LoginThunkArgsInterface
+  ): Promise<UserInterface> => {
     const requestInit: RequestInit = {
       method: HTTP_VERB.POST,
       headers: FETCH_HEADERS,
@@ -60,7 +66,7 @@ class UserService {
       requestInit
     )
       .then((response) => response.json())
-      .then((json) => json.data);
+      .then((userResponse: UserResponseInterface) => userResponse.data);
   };
 }
 

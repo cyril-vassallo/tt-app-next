@@ -3,6 +3,7 @@ export const API_RESOURCES_PATHS = {
   ALL: "/all",
   LOGIN: "/login",
   USER: "/user",
+  GITHUB: "/github",
 };
 
 export const FETCH_HEADERS: HeadersInit = {
