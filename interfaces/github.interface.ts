@@ -1,3 +1,5 @@
+import { MetaInterface } from "../core/interfaces";
+
 export interface GithubInterface {
   id: string;
   user: string;
@@ -8,13 +10,9 @@ export interface GithubInterface {
   token: string;
 }
 
-export interface MetaInterface {
-  method: string;
-  urn: string;
-  uri: string;
-}
-
 export interface GithubResponseInterface {
   data: GithubInterface;
   meta: MetaInterface;
 }
+
+// ThunkArgs Interfaces

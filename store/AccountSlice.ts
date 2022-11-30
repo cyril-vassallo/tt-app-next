@@ -8,7 +8,6 @@ import { AppState } from "./store";
 import { ACTIONS, ACTIONS_PREFIX, THUNK_STATUS } from "../enums/actions.enums";
 import { ThunkStatusType } from "../types/types";
 
-//TODO - add async methods in reducer - https://redux-toolkit.js.org/api/createAsyncThunk
 export const fetchLogin = createAsyncThunk(
   `${ACTIONS_PREFIX.ACCOUNT}/${ACTIONS.FETCH_LOGIN}`,
   async (loginThunkArgs: LoginThunkArgsInterface = {}, thunkAPI) => {

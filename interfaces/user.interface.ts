@@ -1,3 +1,5 @@
+import { MetaInterface } from "../core/interfaces";
+
 export interface RoleInterface {
   name: string;
   permissions: string[];
@@ -15,12 +17,6 @@ export interface UserInterface {
   role: RoleInterface;
 }
 
-export interface MetaInterface {
-  method: string;
-  urn: string;
-  uri: string;
-}
-
 export interface UsersResponseInterface {
   data: UserInterface[];
   meta: MetaInterface;
@@ -31,8 +27,17 @@ export interface UserResponseInterface {
   meta: MetaInterface;
 }
 
+// ThunkArgs Interfaces
+
 export interface UserThunkArgsInterface {
   id?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  job?: string;
+  description?: string;
+  photo?: string;
+  role?: RoleInterface;
 }
 
 export interface LoginThunkArgsInterface {

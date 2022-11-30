@@ -45,7 +45,7 @@ export const usersSlice = createSlice({
     });
 
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
-      const loadedUsers = action.payload.map((user: UserInterface) => user);
+      const loadedUsers: UserInterface[] = action.payload.map((user) => user);
       state.status = THUNK_STATUS.SUCCEEDED;
       state.error = null;
       state.users = state.users.concat(loadedUsers);

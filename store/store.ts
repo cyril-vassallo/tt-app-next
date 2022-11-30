@@ -6,6 +6,7 @@ import { createWrapper } from "next-redux-wrapper";
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { accountSlice } from "./AccountSlice";
+import { tasksSlice } from "./tasksSlice";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     [counterSlice.name]: counterSlice.reducer,
     [usersSlice.name]: usersSlice.reducer,
     [accountSlice.name]: accountSlice.reducer,
+    [tasksSlice.name]: tasksSlice.reducer,
   },
   devTools: true,
 });
