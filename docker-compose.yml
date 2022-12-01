@@ -7,11 +7,10 @@ services:
     working_dir: /usr/www/app
     env_file:
       - .env
-      - ../tt-app-next/.env
     ports:
       - ${PORT:-3000}:${PORT:-3000}
     volumes:
-      - "../tt-app-next:/usr/www/app/"
+      - "./:/usr/www/app/"
     command: "/bin/sh  install.sh"
     networks:
       - app-fullstack
