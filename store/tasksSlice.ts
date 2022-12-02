@@ -6,12 +6,12 @@ import { UserThunkArgsInterface } from "../interfaces/user.interface";
 import { taskService } from "../services/task.service";
 import { AppState } from "./store";
 
-export const fetchUserTasks = createAsyncThunk<TaskInterface[]>(
+export const fetchTasksByUser = createAsyncThunk(
   `${ACTIONS_PREFIX.TASKS}/${ACTIONS.FETCH_USER_TASKS}`,
   async (userThunkArgs: UserThunkArgsInterface = {}, thunkAPI) => {
     try {
       const tasks: TaskInterface[] = await taskService.findByUserId(
-        userThunkArgs.id
+        userThunkArgs
       );
       return tasks;
     } catch (error) {
@@ -32,26 +32,30 @@ const initialState = {
   todayTask: null,
   status: "idle",
   error: null,
-};
+} as TasksState;
 
 export const tasksSlice = createSlice({
   name: ACTIONS_PREFIX.TASKS,
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchUserTasks.pending, (state, action) => {});
-    builder.addCase(fetchUserTasks.fulfilled, (state, action) => {
+    builder.addCase(fetchTasksByUser.pending, (state, action) => {
+      state.status = THUNK_STATUS.PENDING;
+    });
+    builder.addCase(fetchTasksByUser.fulfilled, (state, action) => {
       const loadedTasks: TaskInterface[] = action.payload.map((task) => task);
       state.status = THUNK_STATUS.SUCCEEDED;
       state.error = null;
       state.tasks = state.tasks.concat(loadedTasks);
     });
-    builder.addCase(fetchUserTasks.rejected, (state, action) => {});
+    builder.addCase(fetchTasksByUser.rejected, (state, action) => {
+      state.status = THUNK_STATUS.FAILED;
+    });
   },
 });
 
 export const selectTasksState = (state: AppState) => state.tasks.tasks;
-export const getTaskState = (state: AppState) => state.tasks.todayTask;
+export const selectTodayTaskState = (state: AppState) => state.tasks.todayTask;
 export const getTasksStatus = (state: AppState) => state.tasks.status;
 export const getTasksError = (state: AppState) => state.tasks.error;
 

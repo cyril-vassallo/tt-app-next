@@ -15,13 +15,15 @@ class TaskService {
   /**
    * Fetch tasks by one user id.
    */
-  public findByUserId = async (userId: string): Promise<TaskInterface[]> => {
+  public findByUserId = async (
+    user: UserThunkArgsInterface
+  ): Promise<TaskInterface[]> => {
     const requestInit: RequestInit = {
       method: HTTP_VERB.GET,
       headers: FETCH_HEADERS,
     };
     return fetch(
-      `${this.API_DOMAINE}${this.MAIN_RESOURCE}${this.USER_SUFFIX}/${userId}`,
+      `${this.API_DOMAINE}${this.MAIN_RESOURCE}${this.USER_SUFFIX}/${user.id}`,
       requestInit
     )
       .then((response) => response.json())

@@ -41,13 +41,11 @@ export const usersSlice = createSlice({
     // USERS
     builder.addCase(fetchUsers.pending, (state, action) => {
       state.status = THUNK_STATUS.PENDING;
-      state.error = null;
     });
 
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
       const loadedUsers: UserInterface[] = action.payload.map((user) => user);
       state.status = THUNK_STATUS.SUCCEEDED;
-      state.error = null;
       state.users = state.users.concat(loadedUsers);
     });
 
