@@ -1,0 +1,19 @@
+.login {
+
+  .title {
+    text-align: center;
+    margin: 100px;
+    font-size: 4rem;
+  }
+
+  .fields {
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+  }
+}
