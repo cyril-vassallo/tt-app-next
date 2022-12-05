@@ -1,4 +1,16 @@
+@import '../../styles/_pallette.scss';
+@import '../../styles/breakPoints.scss';
 .login {
+
+  .titlePart1 {
+    text-align: center;
+    font-size: 5rem;
+    margin-top: 4rem;
+  }
+
+  .titlePart2 {
+    color: $warningDark;
+  }
 
   .title {
     text-align: center;
@@ -15,5 +27,16 @@
       margin-bottom: 15px;
     }
 
+  }
+}
+
+
+
+@media screen and (min-width: $sm-screen-size) {
+  .login {
+    .fields {
+      width: 30rem;
+      margin: auto;
+    }
   }
 }
