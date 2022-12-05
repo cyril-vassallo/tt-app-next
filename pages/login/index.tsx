@@ -1,5 +1,5 @@
-import { Button, FilledInput, FormControl, InputLabel, Typography } from '@mui/material';
-import React, { useRef } from 'react'
+import { Alert, Button, FilledInput, FormControl, InputLabel, Typography } from '@mui/material';
+import React, { useRef, useState } from 'react'
 import styles from './login.module.scss';
 import LoginIcon from '@mui/icons-material/Login';
 import { useAppDispatch, useAppSelector } from '../../store/store';
@@ -9,20 +9,37 @@ import { THUNK_STATUS } from '../../enums/actions.enums';
 
 export default function Login() {
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [displayMessage, setDisplayMessage] = useState(false);
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const accountStatus = useAppSelector(getAccountStatus);
+  const accountStatus = useAppSelector(getAccountStatus); 
 
   const handleSubmit = async () => {
+    console.log('handleSubmit');
     const email = emailRef?.current?.value;
     const password = passwordRef?.current?.value;
 
     if( email && password) {
+      console.log('has good data');
+      setDisplayMessage(false);
       await dispatch(fetchLogin({email, password}));
+      
+      if(accountStatus === THUNK_STATUS.PENDING){
+        setIsLoading(true);
+        console.log(isLoading);
+
+        setDisplayMessage(false);
+      }
+
       if(accountStatus === THUNK_STATUS.SUCCEEDED) {
+        console.log(isLoading);
         router.push('/history');
       }
+    }else {
+      setIsLoading(false);
+      setDisplayMessage(true);
     }
   }
 
@@ -43,8 +60,9 @@ export default function Login() {
           <InputLabel htmlFor='password'>Password</InputLabel>
           <FilledInput inputRef={passwordRef} id="password"  type="password"  color='primary' margin="dense" required />
         </FormControl>
+        {displayMessage && <Alert className={styles.alert} severity="error">Check filled information !</Alert>}
         <Button onClick={()=> handleSubmit()} color="primary" variant="contained" endIcon={<LoginIcon />}>
-          Login
+          {isLoading ? 'Loading': 'Login'}
         </Button>
       </form>
     </main>
