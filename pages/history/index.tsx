@@ -8,7 +8,7 @@ import { UserThunkArgsInterface } from '../../interfaces/user.interface';
 
 export default function History() {
   const dispatch = useAppDispatch();
-  const accountStatus = useAppSelector(getAccountStatus);
+
   const taskError = useAppSelector(getTasksError); 
   const tasksState = useAppSelector(selectTasksState);
   const userError = useAppSelector(getAccountError);
@@ -23,10 +23,7 @@ export default function History() {
       if(usersStatus === 'idle'){
         dispatch(fetchUsers());
       }
-      if(accountStatus === 'idle'){
-        dispatch(fetchLogin({email: "cv@demo.fr", password: "123"})) 
-      }  
-    },[usersStatus,accountStatus, dispatch])
+    },[usersStatus, dispatch])
 
     const renderUsers = usersState.map((user, index) => {
       return <div style={{display: 'flex', margin: '5px'}} key={index}>

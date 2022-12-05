@@ -3,6 +3,7 @@ export enum ACTIONS_PREFIX {
   USERS = "users",
   GITHUB = "github",
   TASKS = "tasks",
+  SUBSCRIBE = "subscribe",
 }
 
 export enum ACTIONS {
@@ -10,6 +11,7 @@ export enum ACTIONS {
   FETCH_USERS = "fetchUsers",
   FETCH_USER_TASKS = "fetchUserTasks",
   FETCH_USER_GITHUB = "fetchUserGithub",
+  FETCH_CREATE_ACCOUNT = "fetchCreateAccount",
 }
 
 export enum THUNK_STATUS {

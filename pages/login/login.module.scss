@@ -12,9 +12,9 @@
     color: $warningDark;
   }
 
-  .title {
+  .subtitle {
     text-align: center;
-    margin: 100px;
+    margin-top: 100px;
     font-size: 4rem;
   }
 
@@ -22,14 +22,14 @@
     margin: 15px;
     display: flex;
     flex-direction: column;
-
-    .field {
-      margin-bottom: 15px;
-    }
   }
 
-  .alert {
+  .alert, .submit, .field, .subtitle {
     margin-bottom: 15px;
+  }
+
+  .link {
+    text-align: center;
   }
 }
 

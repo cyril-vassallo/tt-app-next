@@ -22,6 +22,20 @@ export const fetchLogin = createAsyncThunk(
   }
 );
 
+export const fetchCreateAccount = createAsyncThunk(
+  `${ACTIONS_PREFIX.SUBSCRIBE}/${ACTIONS.FETCH_CREATE_ACCOUNT}`,
+  async (loginThunkArgs: LoginThunkArgsInterface = {}, thunkAPI) => {
+    try {
+      const account: UserInterface = await userService.createOne(
+        loginThunkArgs
+      );
+      return account;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 interface AccountState {
   account: UserInterface | null;
   status: ThunkStatusType;
@@ -42,7 +56,7 @@ export const accountSlice = createSlice({
     // standard reducer logic, with auto-generated action types per reducer
   },
   extraReducers: (builder) => {
-    //Account
+    //Login
     builder.addCase(fetchLogin.pending, (state, action) => {
       state.status = THUNK_STATUS.PENDING;
       state.error = null;
@@ -61,6 +75,29 @@ export const accountSlice = createSlice({
         state.error = action.error.message;
       }
     });
+
+    //Create
+    builder.addCase(fetchCreateAccount.pending, (state, action) => {
+      console.log(THUNK_STATUS.PENDING);
+      state.status = THUNK_STATUS.PENDING;
+      state.error = null;
+    });
+
+    builder.addCase(fetchCreateAccount.fulfilled, (state, action) => {
+      const loadedAccount = action.payload;
+      console.log(THUNK_STATUS.SUCCEEDED);
+      state.status = THUNK_STATUS.SUCCEEDED;
+      state.error = null;
+      state.account = loadedAccount;
+    });
+
+    builder.addCase(fetchCreateAccount.rejected, (state, action) => {
+      console.log(THUNK_STATUS.FAILED);
+      if (action.error.message) {
+        state.status = THUNK_STATUS.FAILED;
+        state.error = action.error.message;
+      }
+    });
   },
 });
 
@@ -69,3 +106,10 @@ export const getAccountStatus = (state: AppState) => state.account.status;
 export const getAccountError = (state: AppState) => state.account.error;
 
 export default accountSlice.reducer;
+
+// {
+// 	"firstName": "John",
+// 	"lastName": "Doe",
+// 	"email": "jd@gmail.com",
+// 	"password": "123"
+// }

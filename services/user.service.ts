@@ -68,6 +68,24 @@ class UserService {
       .then((response) => response.json())
       .then((userResponse: UserResponseInterface) => userResponse.data);
   };
+
+  /**
+   * Fetch to create new account, create and get a new user.
+   * @param loginThunkArgs  { email , password, firstName, lastName }.
+   */
+  public createOne = async (
+    loginThunkArgs: LoginThunkArgsInterface
+  ): Promise<UserInterface> => {
+    const requestInit: RequestInit = {
+      method: HTTP_VERB.POST,
+      headers: FETCH_HEADERS,
+      body: JSON.stringify(loginThunkArgs),
+    };
+
+    return fetch(`${this.API_DOMAINE}${this.MAIN_RESOURCE}`, requestInit)
+      .then((response) => response.json())
+      .then((userResponse: UserResponseInterface) => userResponse.data);
+  };
 }
 
 /**

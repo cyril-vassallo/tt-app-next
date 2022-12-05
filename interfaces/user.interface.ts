@@ -43,4 +43,6 @@ export interface UserThunkArgsInterface {
 export interface LoginThunkArgsInterface {
   email?: string;
   password?: string;
+  firstName?: string;
+  lastName?: string;
 }
