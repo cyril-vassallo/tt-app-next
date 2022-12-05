@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 import styles from './login.module.scss';
 import LoginIcon from '@mui/icons-material/Login';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { fetchLogin, selectAccountState, getAccountStatus } from '../../store/AccountSlice';
+import { fetchLogin, getAccountStatus } from '../../store/AccountSlice';
 import { useRouter } from 'next/router'
 import { THUNK_STATUS } from '../../enums/actions.enums';
 
