@@ -1,4 +1,4 @@
-import { API_RESOURCES_PATHS, FETCH_HEADERS } from "../core/constants";
+import { API_RESOURCES_PATHS } from "../core/constants";
 import { HTTP_VERB } from "../enums/http.enums";
 import {
   UserInterface,
@@ -7,20 +7,21 @@ import {
   UsersResponseInterface,
   UserResponseInterface,
 } from "../interfaces/user.interface";
+import { jwtService } from "./jwt.service";
 
 class UserService {
   private API_DOMAINE = API_RESOURCES_PATHS.API_DOMAINE;
   private ALL_SUFFIX = API_RESOURCES_PATHS.ALL;
-  private LOGIN_SUFFIX = API_RESOURCES_PATHS.LOGIN;
   private MAIN_RESOURCE = API_RESOURCES_PATHS.USER;
 
   /**
    * Fetch all the user list.
    */
   public findAll = async (): Promise<UserInterface[]> => {
+    const headers = jwtService.getHeaders();
     const requestInit: RequestInit = {
       method: HTTP_VERB.GET,
-      headers: FETCH_HEADERS,
+      headers,
     };
     return fetch(
       `${this.API_DOMAINE}${this.MAIN_RESOURCE}${this.ALL_SUFFIX}`,
@@ -36,9 +37,10 @@ class UserService {
   public findOneById = async (
     user: UserThunkArgsInterface
   ): Promise<UserInterface> => {
+    const headers = jwtService.getHeaders();
     const requestInit: RequestInit = {
       method: HTTP_VERB.GET,
-      headers: FETCH_HEADERS,
+      headers,
     };
     return fetch(
       `${this.API_DOMAINE}${this.MAIN_RESOURCE}/${user.id}`,
@@ -49,22 +51,16 @@ class UserService {
   };
 
   /**
-   * Fetch login, get an existing user by a given email and password.
-   * @param loginThunkArgs  { email , password }.
+   * Fetch current user account with bearer token.
    */
-  public requestLogin = async (
-    loginThunkArgs: LoginThunkArgsInterface
-  ): Promise<UserInterface> => {
+  public findCurrentUserAccount = async (): Promise<UserInterface> => {
+    const headers = jwtService.getHeaders();
     const requestInit: RequestInit = {
-      method: HTTP_VERB.POST,
-      headers: FETCH_HEADERS,
-      body: JSON.stringify(loginThunkArgs),
+      method: HTTP_VERB.GET,
+      headers,
     };
 
-    return fetch(
-      `${this.API_DOMAINE}${this.MAIN_RESOURCE}${this.LOGIN_SUFFIX}`,
-      requestInit
-    )
+    return fetch(`${this.API_DOMAINE}${this.MAIN_RESOURCE}`, requestInit)
       .then((response) => response.json())
       .then((userResponse: UserResponseInterface) => userResponse.data);
   };
@@ -76,9 +72,10 @@ class UserService {
   public createOne = async (
     loginThunkArgs: LoginThunkArgsInterface
   ): Promise<UserInterface> => {
+    const headers = jwtService.getHeaders();
     const requestInit: RequestInit = {
       method: HTTP_VERB.POST,
-      headers: FETCH_HEADERS,
+      headers,
       body: JSON.stringify(loginThunkArgs),
     };
 

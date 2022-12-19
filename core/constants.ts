@@ -5,6 +5,7 @@ export const API_RESOURCES_PATHS = {
   USER: "/user",
   GITHUB: "/github",
   TASK: "/task",
+  AUTH: "/auth",
 };
 
 export const FETCH_HEADERS: HeadersInit = {

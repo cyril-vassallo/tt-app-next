@@ -5,6 +5,7 @@ import {
   TasksResponseInterface,
 } from "../interfaces/task.interface";
 import { UserThunkArgsInterface } from "../interfaces/user.interface";
+import { jwtService } from "./jwt.service";
 
 class TaskService {
   private API_DOMAINE = API_RESOURCES_PATHS.API_DOMAINE;
@@ -18,9 +19,10 @@ class TaskService {
   public findByUserId = async (
     user: UserThunkArgsInterface
   ): Promise<TaskInterface[]> => {
+    const headers = jwtService.getHeaders();
     const requestInit: RequestInit = {
       method: HTTP_VERB.GET,
-      headers: FETCH_HEADERS,
+      headers,
     };
     return fetch(
       `${this.API_DOMAINE}${this.MAIN_RESOURCE}${this.USER_SUFFIX}/${user.id}`,

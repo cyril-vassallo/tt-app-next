@@ -1,0 +1,14 @@
+@import '../../styles/_pallette.scss';
+@import '../../styles/breakPoints.scss';
+
+.history {
+    .tasks {
+        .task {
+            background-color: $primaryMain;
+      
+            border-radius: 5px;
+        }
+    }
+
+
+}

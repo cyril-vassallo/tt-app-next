@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { selectUsersState, getUsersError, getUsersStatus, fetchUsers } from '../../store/usersSlice';
-import { selectAccountState, getAccountError, getAccountStatus, fetchLogin } from '../../store/AccountSlice';
-import { Alert } from '@mui/material';
+import { selectAccountState, getAccountError  } from '../../store/accountSlice';
+import { Alert, Grid } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { fetchTasksByUser, selectTasksState, getTasksError } from '../../store/tasksSlice';
 import { UserThunkArgsInterface } from '../../interfaces/user.interface';
+import styles from './history.module.scss';
 
 export default function History() {
   const dispatch = useAppDispatch();
@@ -15,7 +16,6 @@ export default function History() {
   const usersError = useAppSelector(getUsersError);
   const usersState = useAppSelector(selectUsersState);
   const usersStatus = useAppSelector(getUsersStatus);
-  const userStatus = useAppSelector(getAccountStatus);
   const accountState = useAppSelector(selectAccountState);
 
 
@@ -43,19 +43,17 @@ export default function History() {
     );
 
     const renderTasks = tasksState && tasksState.map((task, index) => {
-      return (<ul key={index}> 
-         { task.list.map((listItem, i) => <li key={i}>{listItem}</li> )}
-        </ul>
-      )
-    
+      return (<Grid  className={styles.task} item xs={2} sm={4} md={4} key={index}>
+              { task.list.map((listItem, i) => <li key={i}>{listItem}</li> )}
+            </Grid>)
     });
     
 
   return (
-    <div>
+    <div className={styles.history}>
       { !usersError && renderUsers}
       { !userError && renderUser}
-      { !taskError && renderTasks}
+      { !taskError && (<Grid className={styles.tasks} container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>{renderTasks}</Grid>)}
     </div>
   )
 }

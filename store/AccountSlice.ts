@@ -8,13 +8,11 @@ import { AppState } from "./store";
 import { ACTIONS, ACTIONS_PREFIX, THUNK_STATUS } from "../enums/actions.enums";
 import { ThunkStatusType } from "../types/types";
 
-export const fetchLogin = createAsyncThunk(
+export const fetchCurrentUserAccount = createAsyncThunk(
   `${ACTIONS_PREFIX.ACCOUNT}/${ACTIONS.FETCH_LOGIN}`,
-  async (loginThunkArgs: LoginThunkArgsInterface = {}, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const account: UserInterface = await userService.requestLogin(
-        loginThunkArgs
-      );
+      const account: UserInterface = await userService.findCurrentUserAccount();
       return account;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -57,19 +55,19 @@ export const accountSlice = createSlice({
   },
   extraReducers: (builder) => {
     //Login
-    builder.addCase(fetchLogin.pending, (state, action) => {
+    builder.addCase(fetchCurrentUserAccount.pending, (state, action) => {
       state.status = THUNK_STATUS.PENDING;
       state.error = null;
     });
 
-    builder.addCase(fetchLogin.fulfilled, (state, action) => {
+    builder.addCase(fetchCurrentUserAccount.fulfilled, (state, action) => {
       const loadedAccount = action.payload;
       state.status = THUNK_STATUS.SUCCEEDED;
       state.error = null;
       state.account = loadedAccount;
     });
 
-    builder.addCase(fetchLogin.rejected, (state, action) => {
+    builder.addCase(fetchCurrentUserAccount.rejected, (state, action) => {
       if (action.error.message) {
         state.status = THUNK_STATUS.FAILED;
         state.error = action.error.message;
@@ -88,7 +86,6 @@ export const accountSlice = createSlice({
       console.log(THUNK_STATUS.SUCCEEDED);
       state.status = THUNK_STATUS.SUCCEEDED;
       state.error = null;
-      state.account = loadedAccount;
     });
 
     builder.addCase(fetchCreateAccount.rejected, (state, action) => {
@@ -106,10 +103,3 @@ export const getAccountStatus = (state: AppState) => state.account.status;
 export const getAccountError = (state: AppState) => state.account.error;
 
 export default accountSlice.reducer;
-
-// {
-// 	"firstName": "John",
-// 	"lastName": "Doe",
-// 	"email": "jd@gmail.com",
-// 	"password": "123"
-// }

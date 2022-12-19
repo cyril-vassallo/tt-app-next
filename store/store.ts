@@ -1,19 +1,17 @@
 import { authSlice } from "./authSlice";
-import { counterSlice } from "./counterSlice";
 import { usersSlice } from "./usersSlice";
 
 import { createWrapper } from "next-redux-wrapper";
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { accountSlice } from "./AccountSlice";
+import { accountSlice } from "./accountSlice";
 import { tasksSlice } from "./tasksSlice";
 
 const store = configureStore({
   reducer: {
     [authSlice.name]: authSlice.reducer,
-    [counterSlice.name]: counterSlice.reducer,
-    [usersSlice.name]: usersSlice.reducer,
     [accountSlice.name]: accountSlice.reducer,
+    [usersSlice.name]: usersSlice.reducer,
     [tasksSlice.name]: tasksSlice.reducer,
   },
   devTools: true,

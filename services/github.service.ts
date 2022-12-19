@@ -5,6 +5,7 @@ import {
   GithubResponseInterface,
 } from "../interfaces/github.interface";
 import { UserThunkArgsInterface } from "../interfaces/user.interface";
+import { jwtService } from "./jwt.service";
 
 class GithubService {
   private API_DOMAINE = API_RESOURCES_PATHS.API_DOMAINE;
@@ -17,9 +18,10 @@ class GithubService {
   public findOneByUserId = async (
     user: UserThunkArgsInterface
   ): Promise<GithubInterface> => {
+    const headers = jwtService.getHeaders();
     const requestInit: RequestInit = {
       method: HTTP_VERB.GET,
-      headers: FETCH_HEADERS,
+      headers,
     };
     return fetch(
       `${this.API_DOMAINE}${this.MAIN_RESOURCE}${this.USER_SUFFIX}/${user.id}`,
